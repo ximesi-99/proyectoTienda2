@@ -8,27 +8,26 @@
 </head>
 <body>
     <h3>Inicio de Sesión</h3>
-    <form id="login" method="post">
-        <div class="form-group">
-    <label>Usuario</label>
-    <input type="text" class="form-control" name="usuarioValidacion" required>
-    </div>
-    <div class="form-group">
-      <label>Contraseña</label>
-      <input type="password" class="form-control" name="passwordValidacion" required>
-    </div>
-	<button type="submit" class="btn btn-success">Iniciar Sesión</button>
+    <form class="form-group" id="login" method="post">
+        <div>
+            <label>Usuario</label>
+            <input type="text" class="form-control" name="usuario" required>
+        </div>
+        <div>
+          <label>Contraseña</label>
+          <input type="password" class="form-control" name="password" required>
+        </div>
+        <br>
+        <br>
+        <p><input type="submit" class="btn btn-success" name="usuarioValidacion" value="Login"></p>
+        <!-- <button type="submit" class="btn btn-success">Iniciar Sesión</button> -->
   </form>
-	
-	
 
 	<section>
-		<?php 
-		
+		<?php
 			$validLogin = new MvcController();
 			$validLogin -> validarLoginController();
 		?>
-		
 	</section>
 
 </body>

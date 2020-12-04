@@ -7,8 +7,8 @@
 
 		public function plantilla(){
 
-			#include "Views/modules/login.php";
-			include "Views/template.php";
+			//include "Views/modules/login.php";
+			//include "Views/template.php";
 
 		}
 
@@ -16,15 +16,11 @@
 		ENLACES
 		---------------------------------------*/
 		public function enlacesPaginasController(){
+            $enlacesController = "index";
 
 			if (isset($_GET["action"])) {
-				$enlacesController = $_GET["action"];
-			}
-			else{
-
-				$enlacesController = "index";
-			}
-
+                $enlacesController = $_GET["action"];
+            }
 			$respuesta = Paginas::enlacesPaginasModel($enlacesController);
 
 			include $respuesta;
@@ -37,24 +33,28 @@
 		#VALIDACIÓN DEL LOGIN
 		#------------------------------------
 		public function validarLoginController(){
-			session_start();
+			//session_start();
 			if(isset($_POST["usuarioValidacion"])){
+
 				$datosController = array( 
-					"usu"=>$_POST["usuarioValidacion"],
-					"pss"=>$_POST["passwordValidacion"]);
+					"usu"=>$_POST["usuario"],
+					"pss"=>$_POST["password"]);
 				$respuesta = Datos::validarLoginModel($datosController, "usuario");
-	
-				if($respuesta == "success"){
-	
-					echo "Registro Exitoso";
-	
-					
-				}
-	
-				else{
-	
-					header("location:index.php");
-				}
+
+
+                $host  = $_SERVER['HTTP_HOST'];
+                $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+
+				if($respuesta != "index.php") {
+                    echo  "http://".$host."/".$uri.$respuesta."";
+                }
+                ?>
+                <body>
+                <script type="text/javascript">
+                    window.location = "http://"<?$host?>"/"<?$uri.$respuesta?>"";
+                </script>
+                </body>
+                <?php
 	
 			}
 		}

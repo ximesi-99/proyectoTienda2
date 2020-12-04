@@ -10,38 +10,55 @@ class Datos extends Conexion{
 		LOGIN
 	---------------------------------------*/
     #Validación Login   
-    public function validarLoginModel($datosModel,$tabla){
+    public static function validarLoginModel($datosModel,$tabla){
 	   $msg="";
-	   if($stmt = Conexion::conectar()->prepare("SELECT usuario,password FROM users WHERE username=:usu AND password=:pss")) 
+	   if($stmt = Conexion::conectar()->prepare('SELECT * FROM users WHERE username=$datosModel["usu"] AND password=$datosModel["pss"]'))
 	   
-	   $stmt->bindValue(":usu", $datosModel["usu"], PDO::PARAM_STR);
-	   $stmt->bindValue(":pss", $datosModel["pss"], PDO::PARAM_STR);
+	   //$stmt->bindValue(':usuario', $datosModel['usu'], PDO::PARAM_STR);
+	   //$stmt->bindValue(':password', $datosModel['pss'], PDO::PARAM_STR);
 	   $stmt->execute();
 
-	   $count = $stmt->rowCount();
-	   $row   = $stmt->fetch(PDO::FETCH_ASSOC);
-	   if($count == 1 && !empty(row)){
-		   $usu = $row['idTipoUsuario'];
+	   //$count = $stmt->rowCount();
+        $conexionDb = Conexion::conectar();
+        $sql = "SELECT * FROM usuario WHERE usuario='".$datosModel["usu"]."';";
+        $result = Conexion::ejecutarSQL($conexionDb, $sql);
+        $row = null;
 
-		   if ($usu == 1) {
-			   header("Location: Views/template.php");
-		   }
-		   else if ($usu == 2) {
-			header("Location: Views/templateTec.php");
-		   }
-		   else if ($usu == 3) {
-			header("Location: Views/templateDep.php");
-		   }
-		   else if ($usu == 4) {
-			header("Location: Views/templateRepre.php");
-		   }
-		   else if ($usu == 5) {
-			header("Location: Views/templateMed.php");
-		   }
+        if ($result) {
+            while ($row = $result->fetch_object()) {
+                if($row->password == $datosModel["pss"]) {
+                    $usu = $row->idTipoUsuario;
+                    break;
+                }
+            }
+        //$count = 1;
+	   //$row   = $stmt->fetch(PDO::FETCH_ASSOC);
+            $host  = $_SERVER['HTTP_HOST'];
+            $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+           if( !empty($usu)){
+                $pagina = "";
+               if ($usu == 1) {
+                   $pagina = "template.php";
+               }
+               else if ($usu == 2) {
+                $pagina = "templateTec.php";
+               }
+               else if ($usu == 3) {
+                $pagina = "templateDep.php";
+               }
+               else if ($usu == 4) {
+                $pagina = "templateRepre.php";
+               }
+               else if ($usu == 5) {
+                $pagina = "templateMed.php";
+               }
 
-	   }else{
-		   $msg = "Datos erroneos";
-	   }
+           }else{
+               $pagina = "index.php";
+           }
+           echo $pagina;
+        }
+        return $pagina;
 
 	}
 

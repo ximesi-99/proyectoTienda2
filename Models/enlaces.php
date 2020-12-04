@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 class Paginas{
-	
-	public function enlacesPaginasModel($enlaces){
+
+	public static function enlacesPaginasModel($enlaces){
 
 		if($enlaces == "tecnicos" ||$enlaces == "regTecnicos" ||$enlaces == "editarTecnico"
 		||$enlaces == "deportistas" ||$enlaces == "regDeportistas"
@@ -27,13 +27,7 @@ class Paginas{
 		){
 			$module =  "views/modules/".$enlaces.".php";
 		}
-		else if($enlaces == "index"){
-			$module =  "views/modules/inicio.php";
-		}
-		else if($enlaces == "ok"){
-			$module =  "views/modules/inicio.php";
-		}
-		else if($enlaces == "fallo"){
+		else if($enlaces == "index" || $enlaces == "ok" || $enlaces == "fallo"){
 			$module =  "views/modules/inicio.php";
 		}else{
 			$module =  "views/modules/inicio.php";
